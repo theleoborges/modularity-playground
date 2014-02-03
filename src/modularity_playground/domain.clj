@@ -1,11 +1,14 @@
-(ns modularity-playground.domain)
+(ns modularity-playground.domain
+  (require [modularity-playground.protocols :as protocols]))
 
-(defn create-book! [create-fn book]
+(defn create-book! [repo book]
   ;; does some validation etc..
-  (create-fn book))
+  (protocols/insert! repo book))
 
-(defn find-book-by-id [select-fn id]
-  (select-fn {:id id}))
+(defn find-book-by-id [repo id]
+  ;; does some validation etc..
+  (protocols/select repo {:id id}))
 
-(defn delete-book [delete-fn id]
-  (delete-fn id))
+(defn delete-book [repo id]
+  ;; does some validation etc..
+  (protocols/delete! repo {:id id}))

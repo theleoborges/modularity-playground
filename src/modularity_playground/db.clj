@@ -1,6 +1,7 @@
 (ns modularity-playground.db
   ;; this would require things like clojure.java.jdbc or
   ;; korma / honeysql
+  (require [modularity-playground.protocols :refer [Repository]])
   )
 
 
@@ -12,7 +13,18 @@
   (prn "Insert " attrs " into " table-name))
 
 (defn select [conn table-name filters]
-  (prn "Select" filters " from " table-name))
+  (prn "Select " filters " from " table-name))
 
 (defn delete! [conn table-name filters]
-  (prn "Select" filters " from " table-name))
+  (prn "Delete " filters " from " table-name))
+
+(defn make-repository [conn table-name]
+  (reify Repository
+    (insert! [_ attrs]
+      (insert! conn table-name attrs))
+
+    (select  [_ filters]
+      (select conn table-name filters))
+
+    (delete! [_ filters]
+      (delete! conn table-name filters))))

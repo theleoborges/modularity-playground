@@ -7,14 +7,11 @@
 (def conn ;; create db conn pool from some db spec
   )
 
-(def create-book! (partial domain/create-book!
-                           (partial db/insert! conn :books)))
+(def book-repository (db/make-repository conn :books))
 
-(def select-book (partial domain/find-book-by-id
-                          (partial db/select conn :books)))
 
 (defn init
   "Sample app interaction"
   []
-  (create-book! {:title "something cool"})
-  (select-book 10))
+  (domain/create-book!     book-repository {:title "something cool"})
+  (domain/find-book-by-id  book-repository 10))
