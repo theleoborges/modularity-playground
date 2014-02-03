@@ -9,13 +9,13 @@
 ;; well as the parsing of result-sets
 ;; (such as transforming underscore_names into keyword-names)
 
-(defn insert! [conn table-name attrs]
+(defn- insert! [conn table-name attrs]
   (prn "Insert " attrs " into " table-name))
 
-(defn select [conn table-name filters]
+(defn- select [conn table-name filters]
   (prn "Select " filters " from " table-name))
 
-(defn delete! [conn table-name filters]
+(defn- delete! [conn table-name filters]
   (prn "Delete " filters " from " table-name))
 
 (defn make-repository [conn table-name]
