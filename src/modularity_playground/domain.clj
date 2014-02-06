@@ -1,14 +1,19 @@
 (ns modularity-playground.domain
-  (require [modularity-playground.protocols :as protocols]))
+  (require [modularity-playground.protocols :as protocols]
+           [clojure.algo.monads :refer [domonad reader-m asks]]))
 
-(defn create-book! [repo book]
+(defn create-book! [book]
   ;; does some validation etc..
-  (protocols/insert! repo book))
+  (domonad reader-m [repo (asks :book-repo)]
 
-(defn find-book-by-id [repo id]
-  ;; does some validation etc..
-  (protocols/select repo {:id id}))
+           (protocols/insert! repo book)))
 
-(defn delete-book [repo id]
+(defn find-book-by-id [id]
   ;; does some validation etc..
-  (protocols/delete! repo {:id id}))
+    (domonad reader-m [repo (asks :book-repo)]
+             (protocols/select repo {:id id})))
+
+(defn delete-book [id]
+  ;; does some validation etc..
+    (domonad reader-m [repo (asks :book-repo)]
+             (protocols/delete! repo {:id id})))
